@@ -30,15 +30,15 @@ size = 15
 offset.y = 1
 
 [font.normal]
-family = "CodeNewRoman Nerd Font Mono"
+family = "JetBrainsMono Nerd Font Mono"
 style = "Regular"
 
 [font.italic]
-family = "CodeNewRoman Nerd Font Mono"
+family = "JetBrainsMono Nerd Font Mono"
 style = "Italic"
 
 [font.bold]
-family = "CodeNewRoman Nerd Font Mono"
+family = "JetBrainsMono Nerd Font Mono"
 style = "SemiBold"
 
 [[keyboard.bindings]]
