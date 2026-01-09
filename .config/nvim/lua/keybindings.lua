@@ -136,3 +136,7 @@ map('n', '<leader>le', function()
     }
   })
 end)
+
+
+-- avante ai suggestion
+map('n', '<leader>z', ':AvanteToggle<CR>')
