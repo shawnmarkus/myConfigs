@@ -24,9 +24,18 @@ vim.pack.add({
   -- Completion (dependencies first)
   "https://github.com/rafamadriz/friendly-snippets",
   "https://github.com/saghen/blink.cmp",
+
+
+  -- Required plugins
+  "https://github.com/nvim-lua/plenary.nvim",
+  "https://github.com/MunifTanjim/nui.nvim",
+  "https://github.com/MeanderingProgrammer/render-markdown.nvim",
+
+
+  -- Auto completion and ai suggestion
+  "https://github.com/yetone/avante.nvim"
 })
 
--- Helper function to find plugin directory
 local function find_plugin_dir(plugin_name)
   local data_dir = vim.fn.stdpath('data')
   local pattern = data_dir .. '/pack/pack/*/start/' .. plugin_name
