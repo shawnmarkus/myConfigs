@@ -1,3 +1,0 @@
-(include "./yuck/desktop.yuck")
-(include "./yuck/desktop_clock.yuck")
-(include "./yuck/hyprland.yuck")

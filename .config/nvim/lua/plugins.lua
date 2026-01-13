@@ -12,9 +12,15 @@ vim.pack.add({
   "https://github.com/tpope/vim-fugitive",
   "https://github.com/lewis6991/gitsigns.nvim",
 
-  -- Fuzzy finder
-  "https://github.com/nvim-mini/mini.pick",
+ 
+  -- Fuzzy Finder (Telescope)
+  "https://github.com/nvim-telescope/telescope.nvim",
+  { src = "https://github.com/nvim-telescope/telescope-fzf-native.nvim", build = "make" },
 
+
+  -- Copilot
+  { src= 'https://github.com/github/copilot.vim', name = 'copilot.vim', },
+  
   -- Statusline
   "https://github.com/nvim-lualine/lualine.nvim",
 
@@ -33,8 +39,14 @@ vim.pack.add({
 
 
   -- Auto completion and ai suggestion
-  "https://github.com/yetone/avante.nvim"
+  "https://github.com/yetone/avante.nvim",
+  
+  -- directory tree
+  "https://github.com/nvim-tree/nvim-tree.lua",
+  "https://github.com/nvim-tree/nvim-web-devicons"
 })
+
+
 
 local function find_plugin_dir(plugin_name)
   local data_dir = vim.fn.stdpath('data')

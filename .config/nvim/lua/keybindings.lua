@@ -5,12 +5,6 @@ end
 map('n', '<leader>qq', ':bw!<CR>')
 map('n', '<leader>h', ':noh<CR>')
 
--- mini.pick stuff
-local MiniPick = require('mini.pick')
-map('n', '<leader>f', function() MiniPick.builtin.files({ tool = 'git' }) end)
-map('n', '<leader>/', function() MiniPick.builtin.grep_live() end)
-map('n', '<leader>b', function() MiniPick.builtin.buffers() end)
-map('n', '<leader>j', function() MiniPick.builtin.jumps() end)
 
 -- git branches
 local function parse_git_lines(output)
@@ -96,47 +90,41 @@ map('n', '<leader>le', function()
       diag = diag,
     })
   end
-
-  MiniPick.start({
-    source = {
-      name = 'LSP Diagnostics',
-      items = items,
-      choose = function(item)
-        local diag = item.diag
-        -- Store the diagnostic info to use after picker closes
-        local target_line = diag.lnum + 1
-        local target_col = diag.col or 0
-        
-        -- Schedule the jump to happen after the picker closes
-        vim.schedule(function()
-          local bufnr = vim.api.nvim_get_current_buf()
-          
-          -- Validate buffer is still valid
-          if not vim.api.nvim_buf_is_valid(bufnr) then
-            return
-          end
-          
-          -- Get buffer line count and validate line number
-          local line_count = vim.api.nvim_buf_line_count(bufnr)
-          if target_line < 1 or target_line > line_count then
-            return
-          end
-          
-          -- Get the line length to validate column
-          local line_content = vim.api.nvim_buf_get_lines(bufnr, target_line - 1, target_line, false)[1] or ''
-          local line_length = #line_content
-          local safe_col = math.min(target_col, math.max(0, line_length))
-          
-          -- Jump to the diagnostic location
-          local winid = vim.api.nvim_get_current_win()
-          vim.api.nvim_win_set_cursor(winid, { target_line, safe_col })
-          vim.cmd('normal! zz') -- Center the line
-        end)
-      end,
-    }
-  })
 end)
+
+
+
+-- Telescope keybindings
+local map = vim.keymap.set
+local builtin = require("telescope.builtin")
+
+-- Files / buffers
+map("n", "<leader>ff", function()
+  builtin.find_files({
+    hidden = true,
+  })
+end, { desc = "Find files (including hidden)" })
+
+map("n", "<leader>fb", builtin.buffers, { desc = "Buffers" })
+
+-- Project search (keyword across whole repo)
+map("n", "<leader>fg", builtin.live_grep, { desc = "Live grep" })
+
+-- Errors & warnings (ALL files)
+map("n", "<leader>fd", builtin.diagnostics, { desc = "Diagnostics" })
+
+-- LSP
+map("n", "gr", builtin.lsp_references, { desc = "LSP references" })
+map("n", "<leader>fs", builtin.lsp_document_symbols, { desc = "Document symbols" })
+map("n", "<leader>fS", builtin.lsp_workspace_symbols, { desc = "Workspace symbols" })
+
 
 
 -- avante ai suggestion
 map('n', '<leader>z', ':AvanteToggle<CR>')
+
+-- Diagnostic float
+vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float)
+
+-- directory tree
+vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>", { silent = true })

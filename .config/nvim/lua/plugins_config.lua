@@ -9,9 +9,6 @@ vim.cmd [[
 colorscheme gruvbox-material
 ]]
 
--- Fuzzy finder (mini.pick)
-require('mini.pick').setup({})
-
 -- Git modifications sign
 require('gitsigns').setup()
 
@@ -50,6 +47,78 @@ require('avante').setup({
         max_tokens = 4096,
       },
     },
+  },
+})
+
+
+-- Telescope setup
+local telescope_ok, telescope = pcall(require, "telescope")
+if telescope_ok then
+  local actions_ok, actions = pcall(require, "telescope.actions")
+  if actions_ok then
+    telescope.setup({
+      defaults = {
+        layout_strategy = "horizontal",
+        layout_config = {
+          preview_width = 0.55,
+        },
+        sorting_strategy = "ascending",
+        winblend = 0,
+        mappings = {
+          i = {
+            ["<esc>"] = actions.close,
+          },
+        },
+      },
+      pickers = {
+        diagnostics = {
+          theme = "ivy",
+          initial_mode = "normal",
+        },
+      },
+      extensions = {
+        fzf = {
+          fuzzy = true,
+          override_generic_sorter = true,
+          override_file_sorter = true,
+        },
+      },
+    })
+    
+    pcall(require("telescope").load_extension, "fzf")
+  end
+end
+
+
+require("nvim-tree").setup({
+  view = {
+    width = 30,
+    side = "left",
+  },
+
+  renderer = {
+    highlight_opened_files = "name",
+    root_folder_label = false,
+    icons = {
+      show = {
+        file = true,
+        folder = true,
+        git = true,
+      },
+    },
+  },
+
+  update_focused_file = {
+    enable = true,
+    update_root = false,
+  },
+
+  git = {
+    enable = true,
+  },
+
+  filters = {
+    dotfiles = false,
   },
 })
 
