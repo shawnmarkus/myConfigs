@@ -122,3 +122,13 @@ require("nvim-tree").setup({
   },
 })
 
+
+require("gitsigns").setup({
+  current_line_blame = true, -- enable hover blame
+  current_line_blame_opts = {
+    delay = 200,            -- 👈 200 ms delay
+    virt_text = true,
+    virt_text_pos = "eol",  -- show at end of line
+    ignore_whitespace = false,
+  },
+})
