@@ -99,4 +99,7 @@ map('n', '<leader>gb', function()
 end)
 
 
-
+map('n', '<leader>gc', function()
+  vim.cmd('terminal git commit')
+  vim.cmd('startinsert')
+end)
