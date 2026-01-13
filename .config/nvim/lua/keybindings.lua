@@ -88,9 +88,15 @@ map("n", "<leader>e", ":NvimTreeToggle<CR>", { silent = true })
 
 
 --git blame of full file
-map("n", "<leader>gbb", function()
-require("gitsigns").blame({ full = true })
-end, { desc = "Git blame (full)" })
+map('n', '<leader>gb', function()
+  local buf = vim.api.nvim_get_current_buf()
+  local ft = vim.bo[buf].filetype
+  if ft == 'gitsigns-blame' then
+    vim.cmd('bd')
+  else
+    vim.cmd('Gitsigns blame')
+  end
+end)
 
 
 
