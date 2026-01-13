@@ -15,49 +15,6 @@ local function parse_git_lines(output)
   return lines
 end
 
-map('n', '<leader>gb', function()
-  MiniPick.start({
-    source = {
-      name = 'Git Branches',
-      items = function()
-        local output = vim.fn.system('git branch --format="%(refname:short)"')
-        return parse_git_lines(output)
-      end,
-      choose = function(item)
-        local result = vim.fn.system('git checkout ' .. vim.fn.shellescape(item))
-        if vim.v.shell_error == 0 then
-          vim.cmd('checktime')
-        else
-          vim.notify('Git checkout failed: ' .. result, vim.log.levels.ERROR)
-        end
-      end,
-    }
-  })
-end)
-
--- git status
-map('n', '<leader>gs', function()
-  MiniPick.start({
-    source = {
-      name = 'Git Status',
-      items = function()
-        local output = vim.fn.system('git status --porcelain')
-        local lines = parse_git_lines(output)
-        local files = {}
-        for _, line in ipairs(lines) do
-          local file = line:match('%S+%s+(.+)')
-          if file then
-            table.insert(files, file)
-          end
-        end
-        return files
-      end,
-      choose = function(item)
-        vim.cmd('edit ' .. item)
-      end,
-    }
-  })
-end)
 
 -- lsp symbols
 map('n', '<leader>ls', vim.lsp.buf.document_symbol)
@@ -124,7 +81,16 @@ map("n", "<leader>fS", builtin.lsp_workspace_symbols, { desc = "Workspace symbol
 map('n', '<leader>z', ':AvanteToggle<CR>')
 
 -- Diagnostic float
-vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float)
+map("n", "<leader>e", vim.diagnostic.open_float)
 
 -- directory tree
-vim.keymap.set("n", "<leader>e", ":NvimTreeToggle<CR>", { silent = true })
+map("n", "<leader>e", ":NvimTreeToggle<CR>", { silent = true })
+
+
+--git blame of full file
+map("n", "<leader>gbb", function()
+require("gitsigns").blame({ full = true })
+end, { desc = "Git blame (full)" })
+
+
+
